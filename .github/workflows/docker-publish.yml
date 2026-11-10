@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install -r requirements.txt httpx
-      - run: python tests/test_smoke.py
+      - run: python -m tests.test_smoke
       - run: python -m compileall -q app
   publish:
     needs: test
