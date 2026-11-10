@@ -4,7 +4,7 @@ from fastapi.testclient import TestClient
 p=Path(tempfile.mkdtemp())/'equipment.json'
 os.environ.update(DATA_FILE=str(p),ADMIN_PASSWORD='supersecretpassword',SESSION_SECRET='a'*64,COOKIE_SECURE='false')
 sys.path.insert(0,'/mnt/data/edwork/equipment-desk')
-os.chdir('/mnt/data/edwork/equipment-desk')
+os.chdir(Path(__file__).resolve().parents[1])
 from app.main import app
 c=TestClient(app)
 assert c.get('/api/public/inventory').status_code==200
