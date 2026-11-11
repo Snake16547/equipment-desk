@@ -29,6 +29,8 @@ async function deleteEquipment(id){if(!confirm("Delete this equipment entry? His
 async function saveSettings(ev){ev.preventDefault();let n={};["checkout","checkin","equipment_added","equipment_updated","equipment_deleted","manual_adjustment"].forEach(k=>n[k]=$("notify_"+k).checked);let body={smtp:{host:$("smtpHost").value,port:Number($("smtpPort").value),security:$("smtpSecurity").value,username:$("smtpUser").value,password:$("smtpPass").value,sender_name:$("senderName").value,sender_email:$("senderEmail").value,recipients:$("recipients").value.split(",").map(x=>x.trim()).filter(Boolean)},notifications:n};try{await api("/api/admin/settings",{method:"PUT",body:JSON.stringify(body)});alert("Settings saved.");await refresh()}catch(e){alert(e.message)}}
 async function testEmail(){try{let r=await api("/api/admin/test-email",{method:"POST"});alert(r.message)}catch(e){alert(e.message)}}
 async function changePassword(ev){ev.preventDefault();try{await api("/api/admin/password",{method:"POST",body:JSON.stringify({current_password:$("oldPass").value,new_password:$("newPass").value})});alert("Password changed.");$("oldPass").value="";$("newPass").value=""}catch(e){alert(e.message)}}
+async function loadVersion(){try{const r=await api("/api/version");$("appVersion").textContent=r.version||"unknown"}catch(e){$("appVersion").textContent="Version unavailable"}}
+loadVersion();
 init();
 
 async function addPerson(ev){ev.preventDefault();try{await api('/api/admin/people',{method:'POST',body:JSON.stringify({first_name:$('pFirst').value,last_name:$('pLast').value,phone:$('pPhone').value,project:$('pProject').value})});await refresh()}catch(e){alert(e.message)}}
