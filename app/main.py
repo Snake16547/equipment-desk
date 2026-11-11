@@ -3,6 +3,8 @@ import json, os, re, smtplib, ssl, tempfile, threading, time, secrets, hashlib
 from datetime import datetime, timezone
 from email.message import EmailMessage
 from pathlib import Path
+from html import escape
+from urllib.parse import quote
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Request, Response, Depends
 from fastapi.responses import FileResponse, HTMLResponse
@@ -240,13 +242,22 @@ async def security_headers(request: Request, call_next):
     response.headers["Content-Security-Policy"] = "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
     return response
 
+def render_page(filename: str):
+    """Render the version on the server and bust stale frontend asset caches."""
+    html = Path("app/static", filename).read_text(encoding="utf-8")
+    html = html.replace("Version loading…", escape(APP_VERSION))
+    version = quote(APP_VERSION, safe="")
+    for asset in ("style.css", "admin.js", "kiosk.js"):
+        html = html.replace(f"/static/{asset}\"", f"/static/{asset}?v={version}\"")
+    return HTMLResponse(html, headers={"Cache-Control": "no-store"})
+
 @app.get("/")
 def kiosk():
-    return FileResponse("app/static/index.html")
+    return render_page("index.html")
 
 @app.get("/admin")
 def admin_page():
-    return FileResponse("app/static/admin.html")
+    return render_page("admin.html")
 
 @app.get("/robots.txt")
 def robots():
