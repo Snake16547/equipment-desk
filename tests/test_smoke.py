@@ -7,6 +7,7 @@ sys.path.insert(0,'/mnt/data/edwork/equipment-desk')
 os.chdir(Path(__file__).resolve().parents[1])
 from app.main import app
 c=TestClient(app)
+assert c.get('/api/version').json()['version'] == os.environ.get('APP_VERSION','dev')
 assert c.get('/api/public/inventory').status_code==200
 assert c.post('/api/admin/login',json={'password':'supersecretpassword'}).status_code==200
 person={'first_name':'Test','last_name':'Person','phone':'1234567890','project':''}

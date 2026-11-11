@@ -15,6 +15,7 @@ ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD", "")
 SESSION_SECRET = os.getenv("SESSION_SECRET", "")
 COOKIE_SECURE = os.getenv("COOKIE_SECURE", "true").lower() == "true"
 APP_TITLE = os.getenv("APP_TITLE", "Equipment Desk")
+APP_VERSION = os.getenv("APP_VERSION", "dev")
 
 if len(SESSION_SECRET) < 32:
     raise RuntimeError("SESSION_SECRET must be at least 32 characters. Set it in .env.")
@@ -31,6 +32,10 @@ db_lock = threading.RLock()
 attempts = {}
 RATE_WINDOW = 300
 MAX_LOGIN_ATTEMPTS = 8
+
+@app.get("/api/version")
+def app_version():
+    return {"version": APP_VERSION}
 
 def now():
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
