@@ -30,6 +30,14 @@ app.add_middleware(
     same_site="strict", https_only=COOKIE_SECURE, max_age=8 * 60 * 60
 )
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+@app.middleware("http")
+async def disable_browser_cache(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 db_lock = threading.RLock()
 attempts = {}
 RATE_WINDOW = 300
