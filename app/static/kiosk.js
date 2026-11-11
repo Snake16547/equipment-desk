@@ -31,3 +31,5 @@ $("continue").onclick=originalContinue;
 const oldRenderReturnChoices=renderReturnChoices;
 renderReturnChoices=function(loans){window.returnLoansData=loans;oldRenderReturnChoices(loans);$("continue").onclick=confirmReturns};
 loadInventory();
+async function loadVersion(){try{const r=await api("/api/version");$("appVersion").textContent=r.version||"unknown"}catch(e){$("appVersion").textContent="Version unavailable"}}
+loadVersion();
