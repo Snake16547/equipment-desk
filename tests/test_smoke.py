@@ -8,6 +8,20 @@ os.chdir(Path(__file__).resolve().parents[1])
 from app.main import app
 c=TestClient(app)
 assert c.get('/api/version').json()['version'] == os.environ.get('APP_VERSION','dev')
+for page in ('/', '/admin'):
+    response = c.get(page)
+    assert response.status_code == 200
+    assert 'Version loading…' not in response.text
+    assert os.environ.get('APP_VERSION','dev') in response.text
+    assert 'Cache-Control' in response.headers and 'no-store' in response.headers['Cache-Control']
+    assert '/static/style.css?v=' in response.text
+    assert response.headers['Pragma'] == 'no-cache'
+    assert response.headers['Expires'] == '0'
+for path in ('/static/style.css', '/static/admin.js', '/api/version', '/api/public/inventory'):
+    response = c.get(path)
+    assert response.status_code == 200
+    assert 'no-store' in response.headers['Cache-Control']
+    assert response.headers['Pragma'] == 'no-cache'
 assert c.get('/api/public/inventory').status_code==200
 assert c.post('/api/admin/login',json={'password':'supersecretpassword'}).status_code==200
 person={'first_name':'Test','last_name':'Person','phone':'1234567890','project':''}

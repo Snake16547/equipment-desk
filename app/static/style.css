@@ -3,3 +3,34 @@
 .admin-wrap{max-width:1100px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.tab{border:1px solid #dbe1e7;background:white;border-radius:10px;padding:10px 14px;cursor:pointer}.tab.active{background:#172d45;color:white}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:11px;border-bottom:1px solid #edf0f3;vertical-align:top}th{color:#657181;font-size:12px;text-transform:uppercase;letter-spacing:.04em}.admin-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}.admin-form .wide{grid-column:1/-1}.admin-form button{align-self:end}.subpanel{background:#f7f8fa;border-radius:13px;padding:16px;margin:14px 0}.small-btn{border:1px solid #d7dde4;border-radius:8px;background:white;padding:8px 10px;cursor:pointer}.danger{color:#a52929}.notice{background:#fff4dc;border-radius:10px;padding:12px;color:#704e13;font-size:13px}.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.check-grid label{display:flex;align-items:center;font-weight:500}.check-grid input{width:18px}@media(max-width:650px){.admin-form,.check-grid{grid-template-columns:1fr}.admin-form .wide{grid-column:auto}}
 
 .category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:16px 0}.category-card{display:grid;gap:7px;text-align:left;min-height:96px;padding:18px;background:#f5f7fa;border:1px solid #dce3ea;border-radius:13px;cursor:pointer;font:inherit}.category-card strong{font-size:18px}.category-card small{color:#6b7684}.category-card:hover{border-color:#245b9b;background:#edf5fc}
+
+/* Mobile-first responsive layout: single-column defaults, enhanced on wider screens. */
+.wrap,.admin-wrap{width:100%;max-width:1100px;margin-inline:auto;padding:16px 12px 28px}
+.top{gap:12px;align-items:flex-start;flex-wrap:wrap;margin:8px 0 18px}
+.top h1{overflow-wrap:anywhere}
+.panel{padding:18px 14px;border-radius:16px}
+.big-actions,.form-grid,.admin-form,.check-grid{grid-template-columns:minmax(0,1fr)}
+.wide,.admin-form .wide{grid-column:1/-1}
+.big-actions{gap:12px}
+.big{min-height:112px;font-size:18px}
+.tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;padding-bottom:6px;margin:12px 0 18px}
+.tab{flex:0 0 auto;min-height:44px;white-space:nowrap}
+input,select,textarea{min-width:0;max-width:100%;font-size:16px}
+button,.primary,.small-btn,.category-card{touch-action:manipulation}
+.primary,.small-btn{min-height:44px}
+.equip-choice{flex-wrap:wrap;min-width:0}
+.equip-choice .checkline{min-width:0;flex:1 1 160px}
+.equip-choice strong,.avail-row span:first-child{overflow-wrap:anywhere}
+.avail-row{align-items:center}
+.table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.table-wrap table{min-width:660px}
+.table-wrap th,.table-wrap td{white-space:normal}
+.category-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr))}
+@media(min-width:640px){
+ .wrap,.admin-wrap{padding:24px 22px 40px}
+ .panel{padding:28px;border-radius:22px}
+ .big-actions,.form-grid,.admin-form,.check-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .big{min-height:155px;font-size:20px}
+ .tabs{flex-wrap:wrap;overflow-x:visible}
+}
+@media(min-width:1000px){.panel{padding:34px}}
